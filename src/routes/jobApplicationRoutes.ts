@@ -8,6 +8,7 @@ import {
   deleteJobApplication,
   getApplicationStatuses,
 } from "../controllers/jobApplicationController";
+import { validateCreateJobApplication } from "../middleware/jobApplicationValidator";
 
 const router = express.Router();
 
@@ -15,7 +16,12 @@ const router = express.Router();
 router.get("/statuses", authenticate, getApplicationStatuses);
 
 // CRUD operations
-router.post("/", authenticate, createJobApplication);
+router.post(
+  "/",
+  validateCreateJobApplication,
+  authenticate,
+  createJobApplication
+);
 router.get("/", authenticate, getUserJobApplications);
 router.get("/:id", authenticate, getJobApplicationById);
 router.put("/:id", authenticate, updateJobApplication);

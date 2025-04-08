@@ -17,17 +17,6 @@ export const createJobApplication = async (req: Request, res: Response) => {
       notes,
     } = req.body;
 
-    // Validate required fields
-    if (
-      !application_date ||
-      !job_position ||
-      !job_portal ||
-      !company_name ||
-      !status_id
-    ) {
-      res.status(400).json(errorResponse("Missing required fields", 400));
-    }
-
     // Create new job application
     const { data, error } = await supabase
       .from("job_applications")
