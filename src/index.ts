@@ -2,7 +2,10 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import { testDBConnection } from "./utils/testDBConnection";
+// import { testDBConnection } from "./utils/testDBConnection";
+import authRoutes from "./routes/authRoutes";
+import jobApplicationRoutes from "./routes/jobApplicationRoutes";
+import { errorResponse } from "./utils/apiResponse";
 
 // Load environment variables
 dotenv.config();
@@ -22,21 +25,25 @@ app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Job Application Tracker API is running!" });
 });
 
+// API Routes
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/job-applications", jobApplicationRoutes);
+
 // Test route for database connection
-app.get("/test-db", async (req: Request, res: Response) => {
-  try {
-    const connected = await testDBConnection();
-    if (connected) {
-      res.json({ message: "Database connection successful" });
-    } else {
-      res.status(500).json({ message: "Database connection failed" });
-    }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error testing database connection", error });
-  }
-});
+// app.get("/test-db", async (req: Request, res: Response) => {
+//   try {
+//     const connected = await testDBConnection();
+//     if (connected) {
+//       res.json({ message: "Database connection successful" });
+//     } else {
+//       res.status(500).json({ message: "Database connection failed" });
+//     }
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: "Error testing database connection", error });
+//   }
+// });
 
 // Global error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
