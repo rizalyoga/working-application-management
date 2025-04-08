@@ -129,9 +129,10 @@ CREATE TABLE job_applications (
 
 ### User
 
-| Method | Endpoint                       | Description          | Request Body/Query                 |
-| ------ | ------------------------------ | -------------------- | ---------------------------------- |
-| PUT    | `/api/v1/user/change-password` | Change user password | `{ currentPassword, newPassword }` |
+| Method | Endpoint                           | Description              | Request Body/Query                   |
+| ------ | ---------------------------------- | ------------------------ | ------------------------------------ |
+| PUT    | `/api/v1/user/change-password`     | Change user password     | `{ current_password, new_password }` |
+| PUT    | `/api/v1/user/update-profile-data` | Change profile data user | Any fields to update                 |
 
 ## Authentication Flow
 
