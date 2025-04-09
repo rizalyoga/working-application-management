@@ -127,12 +127,13 @@ CREATE TABLE job_applications (
 | DELETE | `/api/v1/job-applications/:id`      | Delete an application        | -                                                                                |
 | GET    | `/api/v1/job-applications/statuses` | Get all application statuses | -                                                                                |
 
-### User
+### User Profile
 
-| Method | Endpoint                           | Description              | Request Body/Query                   |
-| ------ | ---------------------------------- | ------------------------ | ------------------------------------ |
-| PUT    | `/api/v1/user/change-password`     | Change user password     | `{ current_password, new_password }` |
-| PUT    | `/api/v1/user/update-profile-data` | Change profile data user | Any fields to update                 |
+| Method | Endpoint                           | Description                 | Request Body/Query                                                              |
+| ------ | ---------------------------------- | --------------------------- | ------------------------------------------------------------------------------- |
+| PUT    | `/api/v1/user/change-password`     | Change user password        | `{ current_password, new_password }`                                            |
+| PUT    | `/api/v1/user/update-profile-data` | Change profile data user    | Any fields to update                                                            |
+| PUT    | `/api/v1/user/profile-picture`     | Change profile picture user | `form data, key :profile_picture , value: image(JPEG, PNG, JPG, GIF) max 500kb` |
 
 ## Authentication Flow
 
@@ -226,8 +227,8 @@ CREATE TABLE job_applications (
 1. Clone the repository
 
    ```bash
-   git clone <repository-url>
-   cd job-application-tracker-api
+   git clone https://github.com/rizalyoga/working-application-management.git
+   cd working-application-management
    ```
 
 2. Install dependencies

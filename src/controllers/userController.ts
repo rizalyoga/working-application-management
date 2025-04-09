@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import supabase from "../config/supabase";
 import { successResponse, errorResponse } from "../utils/apiResponse";
+import path from "path";
+import { v4 as uuidv4 } from "uuid";
 
 export const updateProfileData = async (req: Request, res: Response) => {
   try {
@@ -82,6 +84,7 @@ export const updateProfileData = async (req: Request, res: Response) => {
   }
 };
 
+// Update Password
 export const updatePassword = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.id; // User ID dari middleware autentikasi
@@ -132,6 +135,119 @@ export const updatePassword = async (req: Request, res: Response) => {
     res
       .status(200)
       .json(successResponse("Password changed successfully", null));
+  } catch (error: any) {
+    res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
+  }
+};
+
+// update profile picture
+export const updateProfilePicture = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+
+    // Periksa apakah ada file yang diunggah
+    if (!req.file) {
+      res.status(400).json(errorResponse("No file uploaded", 400));
+    }
+
+    // Validasi tipe file (hanya izinkan gambar)
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
+
+    const file = req.file as Express.Multer.File;
+    if (!allowedTypes.includes(file.mimetype)) {
+      res
+        .status(400)
+        .json(
+          errorResponse(
+            "File type not allowed. Please upload an image (JPEG, PNG, JPG, GIF)",
+            400
+          )
+        );
+    }
+
+    // Validasi ukuran file (max 500KB = 500 * 1024 bytes)
+    const maxSize = 500 * 1024; // 500KB
+    if (file.size > maxSize) {
+      res
+        .status(400)
+        .json(
+          errorResponse(
+            "File size too large. Maximum size allowed is 500KB",
+            400
+          )
+        );
+    }
+
+    // Mendapatkan data user saat ini
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("profile_picture_url")
+      .eq("id", userId)
+      .single();
+
+    if (userError) {
+      res.status(404).json(errorResponse("User not found", 404));
+    }
+
+    // Hapus file lama dari storage jika ada
+    if (userData?.profile_picture_url) {
+      const oldFilePath = userData.profile_picture_url.split("/").pop();
+      if (oldFilePath) {
+        await supabase.storage.from("profile-pictures").remove([oldFilePath]);
+      }
+    }
+
+    // Generate nama file unik
+    const fileExt = path.extname(file.originalname);
+    const fileName = `${userId}_${uuidv4()}${fileExt}`;
+
+    // Upload file ke Supabase Storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("profile-pictures")
+      .upload(fileName, file.buffer, {
+        contentType: file.mimetype,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      res
+        .status(500)
+        .json(
+          errorResponse(`Error uploading file: ${uploadError.message}`, 500)
+        );
+    }
+
+    // Dapatkan URL publik dari file yang diunggah
+    const { data: urlData } = await supabase.storage
+      .from("profile-pictures")
+      .getPublicUrl(fileName);
+
+    const publicUrl = urlData.publicUrl;
+
+    // Update profile picture URL di database
+    const { data, error } = await supabase
+      .from("users")
+      .update({
+        profile_picture_url: publicUrl,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", userId)
+      .select(
+        "id, name, email, phone_number, profile_picture_url, created_at, updated_at"
+      )
+      .single();
+
+    if (error) {
+      res
+        .status(500)
+        .json(
+          errorResponse(`Error updating profile picture: ${error.message}`, 500)
+        );
+    }
+
+    res
+      .status(200)
+      .json(successResponse("Profile picture updated successfully", data));
   } catch (error: any) {
     res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
   }
