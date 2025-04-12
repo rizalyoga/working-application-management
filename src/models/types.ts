@@ -5,6 +5,7 @@ export interface User {
   phone_number: string;
   password_hash: string;
   profile_picture_url?: string;
+  resume_url?: string;
   created_at: string;
   updated_at: string;
 }

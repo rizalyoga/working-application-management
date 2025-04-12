@@ -128,6 +128,8 @@ export const register = async (req: Request, res: Response) => {
             name: user.name,
             email: user.email,
             phone_number: user.phone_number,
+            profile_picture_url: user.profile_picture_url,
+            resume_url: user.resume_url,
           },
           tokens: {
             access_token: token,
@@ -216,6 +218,8 @@ export const login = async (req: Request, res: Response) => {
           name: user.name,
           email: user.email,
           phone_number: user.phone_number,
+          profile_picture_url: user.profile_picture_url,
+          resume_url: user.resume_url,
         },
         tokens: {
           access_token: token,
