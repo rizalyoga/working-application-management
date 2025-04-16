@@ -9,8 +9,8 @@ export const validateRegister: RequestHandler[] = [
     .matches(/^\+62\d{9,12}$/)
     .withMessage("Phone number must start with +62 followed by 9-12 digits"),
   body("password")
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters long"),
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters long"),
   (req: Request, res: Response, next: NextFunction): void => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
