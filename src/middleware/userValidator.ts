@@ -12,8 +12,6 @@ export const validateUpdatePassword: RequestHandler[] = [
     .withMessage("Password must be at least 6 characters long"),
   (req: Request, res: Response, next: NextFunction): void => {
     const errors = validationResult(req);
-    console.log("INI BODY:", req.body);
-    console.log("INI EROR:", errors);
 
     if (!errors.isEmpty()) {
       const firstErrorMessage = errors.array()[0].msg;

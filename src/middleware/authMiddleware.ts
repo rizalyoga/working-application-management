@@ -20,7 +20,6 @@ export const authenticate = async (
   try {
     // Get token from header
     const authHeader = req.headers.authorization;
-    console.log(authHeader);
 
     if (!authHeader?.startsWith("Bearer ")) {
       res

@@ -3,6 +3,7 @@ import {
   updatePassword,
   updateProfileData,
   updateProfilePicture,
+  getProfileUserData,
 } from "../controllers/userController";
 import {
   uploadResume,
@@ -16,14 +17,14 @@ import uploadPdf from "../middleware/uploadingResumeMiddleware";
 
 const router = express.Router();
 
+router.get("/profile-data", authenticate, getProfileUserData);
+router.put("/update-profile-data", authenticate, updateProfileData);
 router.put(
   "/update-password",
   validateUpdatePassword,
   authenticate,
   updatePassword
 );
-
-router.put("/update-profile-data", authenticate, updateProfileData);
 
 // Route untuk update profile picture
 router.put(

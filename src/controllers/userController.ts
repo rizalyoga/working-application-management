@@ -5,6 +5,58 @@ import { successResponse, errorResponse } from "../utils/apiResponse";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 
+export const getProfileUserData = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+
+    // Check if user exists
+    const { data: existingApp, error: checkError } = await supabase
+      .from("users")
+      .select("id")
+      .eq("id", userId)
+      .single();
+
+    if (checkError) {
+      res
+        .status(checkError.code === "PGRST116" ? 404 : 500)
+        .json(
+          errorResponse(
+            checkError.code === "PGRST116"
+              ? "User not found"
+              : `Error checking user data: ${checkError.message}`,
+            checkError.code === "PGRST116" ? 404 : 500
+          )
+        );
+    }
+
+    // Start building query
+    let query = supabase.from("users").select(`*`).eq("id", userId);
+
+    const { data, error } = await query;
+
+    if (error) {
+      res
+        .status(500)
+        .json(errorResponse(`Error fetching user data: ${error.message}`, 500));
+    }
+
+    const formattedData = data?.map((app) => ({
+      id: app.id,
+      name: app.name,
+      email: app.email,
+      phone_number: app.phone_number,
+      profile_picture_url: app.profile_picture_url,
+      resume_url: app.resume_url,
+    }));
+
+    res
+      .status(200)
+      .json(successResponse("Get data user successfully!", formattedData));
+  } catch (error: any) {
+    res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
+  }
+};
+
 export const updateProfileData = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.id;
