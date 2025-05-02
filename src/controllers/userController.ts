@@ -284,9 +284,7 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
         updated_at: new Date().toISOString(),
       })
       .eq("id", userId)
-      .select(
-        "id, name, email, phone_number, profile_picture_url, created_at, updated_at"
-      )
+      .select("profile_picture_url")
       .single();
 
     if (error) {

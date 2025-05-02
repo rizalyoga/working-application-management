@@ -1,0 +1,8 @@
+{
+  "workbench.statusBar.visible": true,
+  "workbench.tips.enabled": true,
+  "workbench.view.showQuietly": {
+    "workbench.panel.output": false
+  },
+  "breadcrumbs.enabled": true
+}
