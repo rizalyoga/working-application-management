@@ -43,7 +43,7 @@ export const createJobApplication = async (req: Request, res: Response) => {
 
     res
       .status(201)
-      .json(successResponse("Job application created successfully", data?.[0]));
+      .json(successResponse("Job application created successfully"));
   } catch (error: any) {
     res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
   }
@@ -99,8 +99,6 @@ export const getUserJobApplications = async (req: Request, res: Response) => {
       status: app.application_statuses.name,
       status_id: app.status_id,
       notes: app.notes,
-      created_at: app.created_at,
-      updated_at: app.updated_at,
     }));
 
     res
@@ -157,8 +155,6 @@ export const getJobApplicationById = async (req: Request, res: Response) => {
       status: data.application_statuses.name,
       status_id: data.status_id,
       notes: data.notes,
-      created_at: data.created_at,
-      updated_at: data.updated_at,
     };
 
     res
@@ -243,7 +239,6 @@ export const updateJobApplication = async (req: Request, res: Response) => {
 
     // Format the response
     const formattedData = {
-      id: data.id,
       application_date: data.application_date,
       job_position: data.job_position,
       job_portal: data.job_portal,
@@ -251,8 +246,6 @@ export const updateJobApplication = async (req: Request, res: Response) => {
       status: data.application_statuses.name,
       status_id: data.status_id,
       notes: data.notes,
-      created_at: data.created_at,
-      updated_at: data.updated_at,
     };
 
     res
