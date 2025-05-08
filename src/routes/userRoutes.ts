@@ -2,8 +2,9 @@ import express from "express";
 import {
   updatePassword,
   updateProfileData,
-  updateProfilePicture,
   getProfileUserData,
+  updateProfilePicture,
+  deleteProfilePicture,
 } from "../controllers/userController";
 import {
   uploadResume,
@@ -33,6 +34,9 @@ router.put(
   upload.single("profile_picture"),
   updateProfilePicture
 );
+
+// Route untuk update profile picture
+router.delete("/profile-picture", authenticate, deleteProfilePicture);
 
 // Route untuk upload resume dengan error handling
 router.post(

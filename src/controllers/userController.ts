@@ -302,3 +302,69 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
     res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
   }
 };
+
+export const deleteProfilePicture = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+
+    // Mendapatkan data user saat ini
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("profile_picture_url")
+      .eq("id", userId)
+      .single();
+
+    if (userError) {
+      res.status(404).json(errorResponse("User not found", 404));
+    }
+
+    // Cek apakah user memiliki resume
+    if (!userData?.profile_picture_url) {
+      res
+        .status(404)
+        .json(errorResponse("No profile picture found for this user", 404));
+    }
+
+    // Hapus file resume dari storage
+    const oldFilePath = userData?.profile_picture_url.split("/").pop();
+    if (oldFilePath) {
+      const { error: deleteStorageError } = await supabase.storage
+        .from("profile-pictures")
+        .remove([oldFilePath]);
+
+      if (deleteStorageError) {
+        res
+          .status(500)
+          .json(
+            errorResponse(
+              `Error deleting profile picture file: ${deleteStorageError.message}`,
+              500
+            )
+          );
+      }
+    }
+
+    // Update database untuk menghapus reference ke resume
+    const { data, error } = await supabase
+      .from("users")
+      .update({
+        profile_picture_url: null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", userId)
+      .select("profile_picture_url")
+      .single();
+
+    if (error) {
+      res
+        .status(500)
+        .json(errorResponse(`Error updating user data: ${error.message}`, 500));
+    }
+
+    res
+      .status(200)
+      .json(successResponse("Profile picture deleted successfully", data));
+  } catch (error: any) {
+    res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
+  }
+};
