@@ -118,12 +118,9 @@ export const updateProfileData = async (req: Request, res: Response) => {
     }
 
     const formattedData = {
-      id: data.id,
       name: data.name,
       email: data.email,
       phone_number: data.phone_number,
-      created_at: data.created_at,
-      updated_at: data.updated_at,
     };
 
     res
@@ -218,7 +215,7 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
     }
 
     // Validasi ukuran file (max 500KB = 500 * 1024 bytes)
-    const maxSize = 500 * 1024; // 500KB
+    const maxSize = 1000 * 1024; // 500KB
     if (file.size > maxSize) {
       res
         .status(400)
