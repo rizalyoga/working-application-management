@@ -32,11 +32,11 @@ export const register = async (req: Request, res: Response) => {
     const { name, email, phone_number, password } = req.body;
 
     // Validate phone number format (starts with +62)
-    if (!phone_number.startsWith("+62")) {
-      res
-        .status(400)
-        .json(errorResponse("Phone number must start with +62", 400));
-    }
+    // if (!phone_number.startsWith("+62")) {
+    //   res
+    //     .status(400)
+    //     .json(errorResponse("Phone number must start with +62", 400));
+    // }
 
     // Check if user already exists
     const { data: existingUser, error: checkError } = await supabase

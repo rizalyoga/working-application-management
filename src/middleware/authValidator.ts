@@ -5,9 +5,9 @@ import { errorResponse } from "../utils/apiResponse";
 export const validateRegister: RequestHandler[] = [
   body("name").notEmpty().withMessage("Name is required"),
   body("email").isEmail().withMessage("Valid email is required"),
-  body("phone_number")
-    .matches(/^\+62\d{9,12}$/)
-    .withMessage("Phone number must start with +62 followed by 9-12 digits"),
+  // body("phone_number")
+  //   .matches(/^\+62\d{9,12}$/)
+  //   .withMessage("Phone number must start with +62 followed by 9-12 digits"),
   body("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long"),

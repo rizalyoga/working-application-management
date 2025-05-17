@@ -215,7 +215,7 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
     }
 
     // Validasi ukuran file (max 500KB = 500 * 1024 bytes)
-    const maxSize = 1000 * 1024; // 500KB
+    const maxSize = 1024 * 1024; // 500KB
     if (file.size > maxSize) {
       res
         .status(400)

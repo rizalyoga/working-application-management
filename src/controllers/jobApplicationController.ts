@@ -12,6 +12,7 @@ export const createJobApplication = async (req: Request, res: Response) => {
       application_date,
       job_position,
       job_portal,
+      job_url,
       company_name,
       status_id,
       notes,
@@ -26,6 +27,7 @@ export const createJobApplication = async (req: Request, res: Response) => {
           application_date,
           job_position,
           job_portal,
+          job_url,
           company_name,
           status_id,
           notes: notes || null,
@@ -95,6 +97,7 @@ export const getUserJobApplications = async (req: Request, res: Response) => {
       application_date: app.application_date,
       job_position: app.job_position,
       job_portal: app.job_portal,
+      job_url: app.job_url,
       company_name: app.company_name,
       status: app.application_statuses.name,
       status_id: app.status_id,
@@ -151,6 +154,7 @@ export const getJobApplicationById = async (req: Request, res: Response) => {
       application_date: data.application_date,
       job_position: data.job_position,
       job_portal: data.job_portal,
+      job_url: data.job_url,
       company_name: data.company_name,
       status: data.application_statuses.name,
       status_id: data.status_id,
@@ -176,6 +180,7 @@ export const updateJobApplication = async (req: Request, res: Response) => {
       application_date,
       job_position,
       job_portal,
+      job_url,
       company_name,
       status_id,
       notes,
@@ -207,6 +212,7 @@ export const updateJobApplication = async (req: Request, res: Response) => {
     if (application_date !== undefined)
       updateData.application_date = application_date;
     if (job_position !== undefined) updateData.job_position = job_position;
+    if (job_url !== undefined) updateData.job_url = job_url;
     if (job_portal !== undefined) updateData.job_portal = job_portal;
     if (company_name !== undefined) updateData.company_name = company_name;
     if (status_id !== undefined) updateData.status_id = status_id;
@@ -242,6 +248,7 @@ export const updateJobApplication = async (req: Request, res: Response) => {
       application_date: data.application_date,
       job_position: data.job_position,
       job_portal: data.job_portal,
+      job_url: data.job_url,
       company_name: data.company_name,
       status: data.application_statuses.name,
       status_id: data.status_id,

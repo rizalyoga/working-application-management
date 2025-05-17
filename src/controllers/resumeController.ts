@@ -24,7 +24,7 @@ export const uploadResume = async (req: Request, res: Response) => {
     }
 
     // Validasi ukuran file (max 1MB = 1024 * 1024 bytes)
-    const maxSize = 1024 * 1024; // 1MB
+    const maxSize = 2048 * 1024; // 1MB
     if (file.size > maxSize) {
       res
         .status(400)

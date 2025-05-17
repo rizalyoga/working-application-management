@@ -16,7 +16,7 @@ const pdfFileFilter = (req: any, file: any, cb: any) => {
 const uploadPdf = multer({
   storage: storage,
   limits: {
-    fileSize: 1024 * 1024, // 1MB
+    fileSize: 2048 * 1024, // 1MB
   },
   fileFilter: pdfFileFilter,
 });
