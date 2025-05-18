@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import supabase from "../config/supabase";
 import { successResponse, errorResponse } from "../utils/apiResponse";
 import { User, Session } from "../models/types";
+import { sendEmail } from "../utils/sendEmailRequestResetPass";
 
 // Function to generate JWT token
 const generateToken = (user: { id: string; email: string }) => {
@@ -13,6 +14,16 @@ const generateToken = (user: { id: string; email: string }) => {
   }
   return jwt.sign(user, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || "1h",
+  });
+};
+
+// Function to generate JWT token
+const generateLinkResetToken = (user: { id: string; email: string }) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT Secret is not defined");
+  }
+  return jwt.sign(user, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN || 10 * 60 * 1000,
   });
 };
 
@@ -347,5 +358,47 @@ export const refreshToken = async (req: Request, res: Response) => {
     );
   } catch (error: any) {
     res.status(401).json(errorResponse("Invalid refresh token", 401));
+  }
+};
+
+export const requestResetPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    // Cek user
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .select("id")
+      .eq("email", email)
+      .single();
+
+    if (!user || userError) {
+      res.status(404).json(errorResponse("Email not found", 404));
+      return;
+    }
+
+    const token = generateLinkResetToken({ id: user?.id, email: email });
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 menit
+
+    // Simpan token
+    await supabase.from("password_reset_tokens").insert({
+      user_id: user?.id,
+      token,
+      expires_at: expiresAt,
+    });
+
+    // Kirim email
+    const resetLink = `${process.env.BASE_URL_FE}/reset-password?token=${token}`;
+    await sendEmail(email, resetLink);
+
+    res
+      .status(200)
+      .json(
+        successResponse(
+          "The reset link has been sent to your email. Please check your email inbox."
+        )
+      );
+  } catch (error: any) {
+    res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
   }
 };
