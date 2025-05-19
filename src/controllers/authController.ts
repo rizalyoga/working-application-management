@@ -402,3 +402,34 @@ export const requestResetPassword = async (req: Request, res: Response) => {
     res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
   }
 };
+
+export const resetPassword = async (req: Request, res: Response) => {
+  const { token, new_password } = req.body;
+
+  // Cari token
+  const { data: resetToken } = await supabase
+    .from("password_reset_tokens")
+    .select("*")
+    .eq("token", token)
+    .single();
+
+  if (!resetToken || new Date(resetToken.expires_at) < new Date()) {
+    res.status(400).json(errorResponse("Invalid or expired token", 400));
+    return;
+  }
+
+  // Update password
+  // Hash password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(new_password, salt);
+
+  await supabase
+    .from("users")
+    .update({ password_hash: hashedPassword })
+    .eq("id", resetToken.user_id);
+
+  // Hapus token
+  await supabase.from("password_reset_tokens").delete().eq("id", resetToken.id);
+
+  res.status(200).json(successResponse("Password updated successfully"));
+};

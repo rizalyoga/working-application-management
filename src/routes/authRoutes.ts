@@ -5,6 +5,7 @@ import {
   logout,
   refreshToken,
   requestResetPassword,
+  resetPassword,
 } from "../controllers/authController";
 import {
   validateRegister,
@@ -29,5 +30,8 @@ router.post("/refresh-token", validateRefreshToken, refreshToken);
 
 // Request reset password
 router.post("/request-reset-password", requestResetPassword);
+
+// Reset Password
+router.post("/reset-password", resetPassword);
 
 export default router;
