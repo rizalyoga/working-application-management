@@ -128,7 +128,12 @@ export const getJobApplicationById = async (req: Request, res: Response) => {
       .select(
         `
         *,
-        application_statuses (name)
+        application_statuses (name),
+        application_status_history (
+          changed_at,
+          status_id,
+          application_statuses (name)
+        )
       `
       )
       .eq("id", id)
@@ -159,6 +164,11 @@ export const getJobApplicationById = async (req: Request, res: Response) => {
       status: data.application_statuses.name,
       status_id: data.status_id,
       notes: data.notes,
+      status_history: data.application_status_history.map((history: any) => ({
+        changed_at: history.changed_at,
+        status: history.application_statuses.name,
+        status_id: history.status_id,
+      })),
     };
 
     res
@@ -338,6 +348,79 @@ export const getApplicationStatuses = async (req: Request, res: Response) => {
       .status(200)
       .json(
         successResponse("Application statuses retrieved successfully", data)
+      );
+  } catch (error: any) {
+    res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
+  }
+};
+
+export const getJobApplicationTotalBasedOnStatus = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const userId = (req as any).user.id;
+
+    const { data, error } = await supabase
+      .from("job_applications")
+      .select(
+        `
+        status_id
+      `
+      )
+      .eq("user_id", userId); // Ensure user can only access their own data
+
+    if (error) {
+      res
+        .status(500)
+        .json(
+          errorResponse(
+            `Error fetching job application stats: ${error.message}`,
+            500
+          )
+        );
+      return;
+    }
+
+    const countTotalStatus = (status_id: number) => {
+      return data.reduce(
+        (count, status) => (status.status_id === status_id ? count + 1 : count),
+        0
+      );
+    };
+
+    const formatedData = {
+      total_application: data.length,
+      apply: countTotalStatus(1),
+      screening: countTotalStatus(2),
+      interview_hr: countTotalStatus(3),
+      interview_hr_ii: countTotalStatus(7),
+      hr_test: countTotalStatus(13),
+      psychological_test: countTotalStatus(12),
+      interview_user: countTotalStatus(4),
+      interview_user_ii: countTotalStatus(8),
+      technical_test: countTotalStatus(14),
+      interview_C_level: countTotalStatus(9),
+      interview_C_level_ii: countTotalStatus(10),
+      interview_CEO: countTotalStatus(11),
+      ignored_by_company: countTotalStatus(15),
+      reject_cv: countTotalStatus(16),
+      reject_interview_hr: countTotalStatus(17),
+      reject_interview_user: countTotalStatus(18),
+      reject_hr_test: countTotalStatus(19),
+      reject_technical_test: countTotalStatus(20),
+      reject: countTotalStatus(5),
+      success: countTotalStatus(6),
+      closed_vacancy: countTotalStatus(21),
+    };
+
+    res
+      .status(200)
+      .json(
+        successResponse(
+          "Job application stats retrieved successfully",
+          formatedData
+        )
       );
   } catch (error: any) {
     res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));

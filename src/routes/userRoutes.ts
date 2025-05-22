@@ -18,8 +18,13 @@ import uploadPdf from "../middleware/uploadingResumeMiddleware";
 
 const router = express.Router();
 
+// get profile user data
 router.get("/profile-data", authenticate, getProfileUserData);
+
+// update profile user data
 router.put("/update-profile-data", authenticate, updateProfileData);
+
+//  profile password
 router.put(
   "/update-password",
   validateUpdatePassword,
