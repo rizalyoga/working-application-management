@@ -10,13 +10,21 @@ A RESTful API for tracking and managing job applications, built with Express.js,
   - Login with email/phone and password
   - JWT-based authentication with refresh tokens
   - Session management
-  - Password change functionality
+  - Password reset functionality
 
 - **Job Application Management**
+
   - Create, read, update, and delete job applications
-  - Track application statuses (apply, screening, interview HR, interview User, reject, success)
+  - Track application statuses (apply, screening, interview HR, interview User, reject, success, etc)
   - Filter job applications by status
   - Add notes to applications
+  - Application statistics and analytics
+
+- **User Data Management**
+
+  - Read, update data user ( username, email, password, photo profile)
+  - Password change functionality
+  - Upload & download resume
 
 ## Tech Stack
 
@@ -25,6 +33,7 @@ A RESTful API for tracking and managing job applications, built with Express.js,
 - PostgreSQL (hosted on Supabase)
 - JWT for authentication
 - bcrypt for password hashing
+- nodemailer
 
 ## Project Structure
 
@@ -42,6 +51,7 @@ src/
 ## Database Schema
 
 The application uses the following database schema:
+![Logo perusahaan](/assets/databse-schema.png)
 
 ### Users Table
 
@@ -105,35 +115,68 @@ CREATE TABLE job_applications (
 );
 ```
 
+### Password reset tokens table
+
+```sql
+create table password_reset_tokens (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references users(id) on delete cascade,
+  token varchar not null unique,
+  expires_at timestamptz not null,
+  created_at timestamptz default now()
+);
+```
+
+### Application status history table
+
+```sql
+CREATE TABLE application_status_history (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  application_id UUID NOT NULL,
+  status_id INT4 NOT NULL,
+  changed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  FOREIGN KEY (application_id) REFERENCES job_applications(id) ON DELETE CASCADE,
+  FOREIGN KEY (status_id) REFERENCES application_statuses(id)
+);
+```
+
 ## API Endpoints
 
 ### Authentication
 
-| Method | Endpoint                     | Description          | Request Body                              |
-| ------ | ---------------------------- | -------------------- | ----------------------------------------- |
-| POST   | `/api/v1/auth/register`      | Register a new user  | `{ name, email, phone_number, password }` |
-| POST   | `/api/v1/auth/login`         | Login user           | `{ identifier, password }`                |
-| POST   | `/api/v1/auth/logout`        | Logout user          | `{ refresh_token }`                       |
-| POST   | `/api/v1/auth/refresh-token` | Get new access token | `{ refresh_token }`                       |
-
-### Job Applications
-
-| Method | Endpoint                            | Description                  | Request Body/Query                                                               |
-| ------ | ----------------------------------- | ---------------------------- | -------------------------------------------------------------------------------- |
-| GET    | `/api/v1/job-applications`          | Get all user applications    | Query: `status_id` (optional)                                                    |
-| GET    | `/api/v1/job-applications/:id`      | Get application by ID        | -                                                                                |
-| POST   | `/api/v1/job-applications`          | Create a new application     | `{ application_date, job_position, job_portal, company_name, status_id, notes }` |
-| PUT    | `/api/v1/job-applications/:id`      | Update an application        | Any fields to update                                                             |
-| DELETE | `/api/v1/job-applications/:id`      | Delete an application        | -                                                                                |
-| GET    | `/api/v1/job-applications/statuses` | Get all application statuses | -                                                                                |
+| Method | Endpoint                              | Description               | Request Body                |
+| ------ | ------------------------------------- | ------------------------- | --------------------------- |
+| POST   | `/api/v1/auth/register`               | Register a new user       | `{ name, email, password }` |
+| POST   | `/api/v1/auth/login`                  | Login user                | `{ identifier, password }`  |
+| POST   | `/api/v1/auth/logout`                 | Logout user               | `{ refresh_token }`         |
+| POST   | `/api/v1/auth/refresh-token`          | Get new access token      | `{ refresh_token }`         |
+| POST   | `/api/v1/auth/request-reset-password` | Reques for reset password | `{ email }`                 |
+| POST   | `/api/v1/auth/reset-password`         | Reset password            | `{ token,new_password }`    |
 
 ### User Profile
 
-| Method | Endpoint                           | Description                 | Request Body/Query                                                              |
-| ------ | ---------------------------------- | --------------------------- | ------------------------------------------------------------------------------- |
-| PUT    | `/api/v1/user/change-password`     | Change user password        | `{ current_password, new_password }`                                            |
-| PUT    | `/api/v1/user/update-profile-data` | Change profile data user    | Any fields to update                                                            |
-| PUT    | `/api/v1/user/profile-picture`     | Change profile picture user | `form data, key :profile_picture , value: image(JPEG, PNG, JPG, GIF) max 500kb` |
+| Method | Endpoint                           | Description                 | Request Body/Query                                                            |
+| ------ | ---------------------------------- | --------------------------- | ----------------------------------------------------------------------------- |
+| GET    | `/api/v1/user/profile-data`        | Get profile data            | `{ - }`                                                                       |
+| PUT    | `/api/v1/user/change-password`     | Change user password        | `{ current_password, new_password }`                                          |
+| PUT    | `/api/v1/user/update-profile-data` | Change profile data user    | Any fields to update                                                          |
+| PUT    | `/api/v1/user/profile-picture`     | Change profile picture user | `form data, key :profile_picture , value: image(JPEG, PNG, JPG, GIF) max 1MB` |
+| DEL    | `/api/v1/user/profile-picture`     | Delete profile picture user | `{ - }`                                                                       |
+| POST   | `/api/v1/user/post-resume`         | Upload resume file          | `form-data, key: 'resume' ,value: pdf-file(max 2 MB)`                         |
+| GET    | `/api/v1/user/get-resume`          | Get link of resume file     | `{ - }`                                                                       |
+| DEL    | `/api/v1/user/delete-resume`       | Delete resume file          | `{ - }`                                                                       |
+
+### Job Applicatons
+
+| Method | Endpoint                                   | Description                                     | Request Body/Query                                                                        |
+| ------ | ------------------------------------------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| POST   | `/api/v1/job-applications`                 | Create new application                          | `{ application_date, job_position, job_portal, company_name, job_url, status_id, notes }` |
+| PUT    | `/api/v1/job-applications/{:job-id}`       | Update application data                         | Any fields to update                                                                      |
+| DEL    | `/api/v1/job-applications/{:job-id}`       | Delete application data                         | `{ - }`                                                                                   |
+| GET    | `/api/v1/job-applications`                 | Get all data applications                       | `{ - }`                                                                                   |
+| GET    | `/api/v1/job-applications/{:id}`           | Get data application by id                      | `{ - }`                                                                                   |
+| GET    | `/api/v1/job-applications/group-by-status` | Get the total number of applications per status | `{ - }`                                                                                   |
+| GET    | `/api/v1/job-applications/statuses`        | Get all application statuses                    | `{ - }`                                                                                   |
 
 ## Authentication Flow
 
@@ -273,15 +316,6 @@ The API uses consistent error responses:
   }
 }
 ```
-
-## Future Improvements
-
-- Add user profile management
-- Email verification
-- Password reset functionality
-- Application statistics and analytics
-- Interview scheduling and reminders
-- Export to PDF/CSV
 
 ## License
 

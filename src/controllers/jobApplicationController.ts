@@ -410,8 +410,8 @@ export const getJobApplicationTotalBasedOnStatus = async (
       reject_hr_test: countTotalStatus(19),
       reject_technical_test: countTotalStatus(20),
       reject: countTotalStatus(5),
-      success: countTotalStatus(6),
       closed_vacancy: countTotalStatus(21),
+      success: countTotalStatus(6),
     };
 
     res
