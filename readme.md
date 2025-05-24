@@ -144,39 +144,39 @@ CREATE TABLE application_status_history (
 
 ### Authentication
 
-| Method | Endpoint                              | Description               | Request Body                |
-| ------ | ------------------------------------- | ------------------------- | --------------------------- |
-| POST   | `/api/v1/auth/register`               | Register a new user       | `{ name, email, password }` |
-| POST   | `/api/v1/auth/login`                  | Login user                | `{ identifier, password }`  |
-| POST   | `/api/v1/auth/logout`                 | Logout user               | `{ refresh_token }`         |
-| POST   | `/api/v1/auth/refresh-token`          | Get new access token      | `{ refresh_token }`         |
-| POST   | `/api/v1/auth/request-reset-password` | Reques for reset password | `{ email }`                 |
-| POST   | `/api/v1/auth/reset-password`         | Reset password            | `{ token,new_password }`    |
+| Method | Endpoint                              | Description               | Request Body                | Auth (Bearer) |
+| ------ | ------------------------------------- | ------------------------- | --------------------------- | ------------- |
+| POST   | `/api/v1/auth/register`               | Register a new user       | `{ name, email, password }` | NO            |
+| POST   | `/api/v1/auth/login`                  | Login user                | `{ identifier, password }`  | NO            |
+| POST   | `/api/v1/auth/logout`                 | Logout user               | `{ - }`                     | YES           |
+| POST   | `/api/v1/auth/refresh-token`          | Get new access token      | `{ refresh_token }`         | YES           |
+| POST   | `/api/v1/auth/request-reset-password` | Reques for reset password | `{ email }`                 | NO            |
+| POST   | `/api/v1/auth/reset-password`         | Reset password            | `{ token,new_password }`    | NO            |
 
 ### User Profile
 
-| Method | Endpoint                           | Description                 | Request Body/Query                                                            |
-| ------ | ---------------------------------- | --------------------------- | ----------------------------------------------------------------------------- |
-| GET    | `/api/v1/user/profile-data`        | Get profile data            | `{ - }`                                                                       |
-| PUT    | `/api/v1/user/change-password`     | Change user password        | `{ current_password, new_password }`                                          |
-| PUT    | `/api/v1/user/update-profile-data` | Change profile data user    | Any fields to update                                                          |
-| PUT    | `/api/v1/user/profile-picture`     | Change profile picture user | `form data, key :profile_picture , value: image(JPEG, PNG, JPG, GIF) max 1MB` |
-| DEL    | `/api/v1/user/profile-picture`     | Delete profile picture user | `{ - }`                                                                       |
-| POST   | `/api/v1/user/post-resume`         | Upload resume file          | `form-data, key: 'resume' ,value: pdf-file(max 2 MB)`                         |
-| GET    | `/api/v1/user/get-resume`          | Get link of resume file     | `{ - }`                                                                       |
-| DEL    | `/api/v1/user/delete-resume`       | Delete resume file          | `{ - }`                                                                       |
+| Method | Endpoint                           | Description                 | Request Body/Query                                                            | Auth (Bearer) |
+| ------ | ---------------------------------- | --------------------------- | ----------------------------------------------------------------------------- | ------------- |
+| GET    | `/api/v1/user/profile-data`        | Get profile data            | `{ - }`                                                                       | YES           |
+| PUT    | `/api/v1/user/change-password`     | Change user password        | `{ current_password, new_password }`                                          | YES           |
+| PUT    | `/api/v1/user/update-profile-data` | Change profile data user    | Any fields to update                                                          | YES           |
+| PUT    | `/api/v1/user/profile-picture`     | Change profile picture user | `form data, key :profile_picture , value: image(JPEG, PNG, JPG, GIF) max 1MB` | YES           |
+| DEL    | `/api/v1/user/profile-picture`     | Delete profile picture user | `{ - }`                                                                       | YES           |
+| POST   | `/api/v1/user/post-resume`         | Upload resume file          | `form-data, key: 'resume' ,value: pdf-file(max 2 MB)`                         | YES           |
+| GET    | `/api/v1/user/get-resume`          | Get link of resume file     | `{ - }`                                                                       | YES           |
+| DEL    | `/api/v1/user/delete-resume`       | Delete resume file          | `{ - }`                                                                       | YES           |
 
 ### Job Applicatons
 
-| Method | Endpoint                                   | Description                                     | Request Body/Query                                                                        |
-| ------ | ------------------------------------------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| POST   | `/api/v1/job-applications`                 | Create new application                          | `{ application_date, job_position, job_portal, company_name, job_url, status_id, notes }` |
-| PUT    | `/api/v1/job-applications/{:job-id}`       | Update application data                         | Any fields to update                                                                      |
-| DEL    | `/api/v1/job-applications/{:job-id}`       | Delete application data                         | `{ - }`                                                                                   |
-| GET    | `/api/v1/job-applications`                 | Get all data applications                       | `{ - }`                                                                                   |
-| GET    | `/api/v1/job-applications/{:id}`           | Get data application by id                      | `{ - }`                                                                                   |
-| GET    | `/api/v1/job-applications/group-by-status` | Get the total number of applications per status | `{ - }`                                                                                   |
-| GET    | `/api/v1/job-applications/statuses`        | Get all application statuses                    | `{ - }`                                                                                   |
+| Method | Endpoint                                   | Description                                     | Request Body/Query                                                                        | Auth (Bearer) |
+| ------ | ------------------------------------------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------- |
+| POST   | `/api/v1/job-applications`                 | Create new application                          | `{ application_date, job_position, job_portal, company_name, job_url, status_id, notes }` | YES           |
+| PUT    | `/api/v1/job-applications/{:job-id}`       | Update application data                         | Any fields to update                                                                      | YES           |
+| DEL    | `/api/v1/job-applications/{:job-id}`       | Delete application data                         | `{ - }`                                                                                   | YES           |
+| GET    | `/api/v1/job-applications`                 | Get all data applications                       | `{ - }`                                                                                   | YES           |
+| GET    | `/api/v1/job-applications/{:id}`           | Get data application by id                      | `{ - }`                                                                                   | YES           |
+| GET    | `/api/v1/job-applications/group-by-status` | Get the total number of applications per status | `{ - }`                                                                                   | YES           |
+| GET    | `/api/v1/job-applications/statuses`        | Get all application statuses                    | `{ - }`                                                                                   | YES           |
 
 ## Authentication Flow
 

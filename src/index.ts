@@ -7,6 +7,9 @@ import authRoutes from "./routes/authRoutes";
 import jobApplicationRoutes from "./routes/jobApplicationRoutes";
 import userRoutes from "./routes/userRoutes";
 import { errorResponse } from "./utils/apiResponse";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import swaggerOptions from "./config/swagger";
 
 // Load environment variables
 dotenv.config();
@@ -25,6 +28,10 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Job Application Tracker API is running!" });
 });
+
+// Setup Swagger
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API Routes
 app.use("/api/v1/auth", authRoutes);
@@ -59,6 +66,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+  console.log(`Dokumentasi API tersedia di http://localhost:${port}/api-docs`);
 });
 
 export default app;
