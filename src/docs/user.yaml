@@ -268,7 +268,7 @@ paths:
                     type: string
                     example: Error updating password
 
-    # UPDATE PROFILE PICTURE
+  # UPDATE PROFILE PICTURE
   /api/v1/user/profile-picture:
     put:
       summary: Update user profile picture

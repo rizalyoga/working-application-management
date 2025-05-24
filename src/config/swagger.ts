@@ -6,7 +6,7 @@ const swaggerOptions: Options = {
     info: {
       title: "Job Track API",
       version: "1.0.0",
-      description: "API untuk mengelola lamaran pekerjaan",
+      description: "API documentation for Job-Track.",
     },
     servers: [
       {
