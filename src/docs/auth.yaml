@@ -476,10 +476,3 @@ paths:
                   message:
                     type: string
                     example: Internal server error
-
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
