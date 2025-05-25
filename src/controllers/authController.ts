@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { v4 as uuidv4 } from "uuid";
 import supabase from "../config/supabase";
 import { successResponse, errorResponse } from "../utils/apiResponse";
 import { User, Session } from "../models/types";
