@@ -13,6 +13,10 @@ const swaggerOptions: Options = {
         url: "http://localhost:5500",
         description: "Development server",
       },
+      {
+        url: "job-track-api.vercel.app",
+        description: "Production server",
+      },
     ],
     components: {
       securitySchemes: {
