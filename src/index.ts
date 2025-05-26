@@ -31,18 +31,14 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Setup Swagger
-const cssPath = require.resolve("swagger-ui-dist/swagger-ui.css");
-const css = fs.readFileSync(cssPath, "utf-8");
-
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use(
   "/api-docs",
   swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, {  customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.52.5/swagger-ui.css',
-    customJs: [
-      'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.52.5/swagger-ui-bundle.js',
-      'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.52.5/swagger-ui-standalone-preset.js'
-    ] })
+  swaggerUi.setup(swaggerSpec, {
+    customCssUrl:
+      "https://l.facebook.com/l.php?u=https%3A%2F%2Fcdnjs.cloudflare.com%2Fajax%2Flibs%2Fswagger-ui%2F4.1.0%2Fswagger-ui.min.css%3Ffbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExeVdXYnFRemFrZ0Nhc3dKMAEerdmDq95qXZgzdXlJUWintKxhjrShAyMad-9DO6QtWszF_2lPAP5CxsUB-Oc_aem_p1V5gKxiQznas9vMyZ9oXA&h=AT3Ox666ez_z76EJtvzyfA56w5nxNYX49vPfUk_d6QQIw_DbzagKLvLnxcLL1gj6v-gWwx6S_yuvaue4b9zSkZlrHS8cqhFpuUFj3ctOWFKhEQuo3hAhI5lIgdQyg9OhjRo9LKN-&__tn__=R]-R&c[0]=AT14vT6bF9VSBmaTU_FHbyauA161PU2Pezo8bQuSTtbx27OTFIXB-NGoz3Pwz34phhTKqwEXV2lniAJ2ZnHf_vpxAEdWpPRkL9GdlR_aO03sMgnrCDzD-D0s_Yp1kqYtqS6J8gKVZXadklJSPohNHllybiqgiGZazwqkZA5W3yCMRe81Nolf0sc",
+  })
 );
 
 // API Routes
