@@ -25,12 +25,24 @@ paths:
                   data:
                     type: object
                     properties:
+                      id:
+                        type: string
+                        example: 22229083-5f5a-4a11-mn34-jksahd1234
                       name:
                         type: string
                         example: John Doe
                       email:
                         type: string
                         example: john.doe@example.com
+                      phone_number:
+                        type: string
+                        example: +6284231111333
+                      profile_picture_url:
+                        type: string
+                        example: https://ayyieaqvvurjnfoxvlzt.supabase.co/storage/v1/object/public/profile-pictures/59ca9083-5f5a-8888-ab3d-63aa48c10696_23482cf6-2222-40fb-ad10-jasdhjkasdhuw12.png
+                      resume_url:
+                        type: string
+                        example: https://ayyieaqvvurjnfoxvlzt.supabase.co/storage/v1/object/public/resumes/59ca9083-5f5a-9ab2-ac7d-63aa48c10696_215ae0fd-f27f-45ce-9999-njcasu13w2134.pdf
         "401":
           description: Unauthorized
           content:
