@@ -38,7 +38,11 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use(
   "/api-docs",
   swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, { customCss: css })
+  swaggerUi.setup(swaggerSpec, {  customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.52.5/swagger-ui.css',
+    customJs: [
+      'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.52.5/swagger-ui-bundle.js',
+      'https://cdn.jsdelivr.net/npm/swagger-ui-dist@3.52.5/swagger-ui-standalone-preset.js'
+    ] })
 );
 
 // API Routes
