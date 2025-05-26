@@ -10,6 +10,7 @@ import { errorResponse } from "./utils/apiResponse";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import swaggerOptions from "./config/swagger";
+import fs from "fs";
 
 // Load environment variables
 dotenv.config();
@@ -30,8 +31,15 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Setup Swagger
+const cssPath = require.resolve("swagger-ui-dist/swagger-ui.css");
+const css = fs.readFileSync(cssPath, "utf-8");
+
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, { customCss: css })
+);
 
 // API Routes
 app.use("/api/v1/auth", authRoutes);
