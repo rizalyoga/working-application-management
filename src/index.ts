@@ -44,7 +44,7 @@ app.use(
         "https://cdnjs.cloudflare.com", // Allow styles from CDN
         "'unsafe-inline'", // Required for Swagger UI inline styles
       ],
-      connectSrc: ["'self'", "https://your-domain.vercel.app"], // Allow API connections
+      connectSrc: ["'self'", "https://job-track-api.vercel.app"], // Allow API connections
       imgSrc: ["'self'", "data:"], // Allow images (optional, for Swagger UI logo)
       frameSrc: ["'self'"], // Optional, for iframes if needed
     },

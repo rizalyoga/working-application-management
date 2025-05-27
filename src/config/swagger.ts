@@ -10,12 +10,12 @@ const swaggerOptions: Options = {
     },
     servers: [
       {
-        url: "http://localhost:5500",
-        description: "Development server",
-      },
-      {
         url: process.env.BASE_URL_BE,
         description: "Production server",
+      },
+      {
+        url: "http://localhost:5500",
+        description: "Development server",
       },
     ],
     components: {
@@ -33,7 +33,7 @@ const swaggerOptions: Options = {
       },
     ],
   },
-  apis: ["src/docs/*.yaml"], // Membaca file YAML di folder docs
+  apis: ["./src/docs/*.yaml"], // Membaca file YAML di folder docs
 };
 
 export default swaggerOptions;
