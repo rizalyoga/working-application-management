@@ -8,27 +8,12 @@
   ],
   "routes": [
     {
-      "src": "/api-docs",
-      "dest": "/src/index.ts"
-    },
-    {
       "src": "/api-docs/(.*)",
       "dest": "/src/index.ts"
     },
     {
       "src": "/(.*)",
       "dest": "/src/index.ts"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api-docs",
-      "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; connect-src 'self' https://job-track-api.vercel.app/.app; img-src 'self' data:; frame-src 'self'"
-        }
-      ]
     }
   ]
 }
