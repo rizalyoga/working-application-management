@@ -30,6 +30,27 @@ app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Job Application Tracker API is running!" });
 });
 
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        "https://cdnjs.cloudflare.com", // Allow scripts from CDN
+        "'unsafe-inline'", // Required for Swagger UI inline scripts
+      ],
+      styleSrc: [
+        "'self'",
+        "https://cdnjs.cloudflare.com", // Allow styles from CDN
+        "'unsafe-inline'", // Required for Swagger UI inline styles
+      ],
+      connectSrc: ["'self'", "https://your-domain.vercel.app"], // Allow API connections
+      imgSrc: ["'self'", "data:"], // Allow images (optional, for Swagger UI logo)
+      frameSrc: ["'self'"], // Optional, for iframes if needed
+    },
+  })
+);
+
 // Setup Swagger
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use(
