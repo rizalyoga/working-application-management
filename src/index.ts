@@ -54,6 +54,9 @@ app.use(
 // Setup Swagger
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get("/json", (req: Request, res: Response) => {
+  res.json(swaggerSpec);
+});
 
 // API Routes
 app.use("/api/v1/auth", authRoutes);

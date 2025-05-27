@@ -33,7 +33,7 @@ const swaggerOptions: Options = {
       },
     ],
   },
-  apis: ["./src/docs/*.yaml"], // Membaca file YAML di folder docs
+  apis: ["./src/docs/*.yaml", "./src/routes/*.ts"], // Membaca file YAML di folder docs
 };
 
 export default swaggerOptions;

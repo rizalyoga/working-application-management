@@ -24,6 +24,10 @@
       "dest": "/src/index.ts"
     },
     {
+      "src": "/api-docs/json",
+      "dest": "/src/index.ts"
+    },
+    {
       "src": "/api-docs/(.*)",
       "dest": "/src/index.ts"
     },
