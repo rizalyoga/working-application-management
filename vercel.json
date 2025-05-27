@@ -8,6 +8,24 @@
   ],
   "routes": [
     {
+      "src": "/api-docs/(.*\\.js)",
+      "dest": "/src/index.ts",
+      "headers": {
+        "Content-Type": "application/javascript"
+      }
+    },
+    {
+      "src": "/api-docs/(.*\\.css)",
+      "dest": "/src/index.ts",
+      "headers": {
+        "Content-Type": "text/css"
+      }
+    },
+    {
+      "src": "/api-docs/(.*)",
+      "dest": "/src/index.ts"
+    },
+    {
       "src": "/(.*)",
       "dest": "/src/index.ts"
     }

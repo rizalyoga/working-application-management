@@ -10,13 +10,11 @@ const swaggerOptions: Options = {
     },
     servers: [
       {
-        url: process.env.BASE_URL_BE
-          ? `${process.env.BASE_URL_BE}`
-          : "http://localhost:5500",
+        url: "http://localhost:5500",
         description: "Development server",
       },
       {
-        url: "job-track-api.vercel.app",
+        url: process.env.BASE_URL_BE,
         description: "Production server",
       },
     ],
