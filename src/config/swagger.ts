@@ -1,4 +1,5 @@
 import { Options } from "swagger-jsdoc";
+import path from "path";
 
 const swaggerOptions: Options = {
   definition: {
@@ -33,7 +34,11 @@ const swaggerOptions: Options = {
       },
     ],
   },
-  apis: ["./src/docs/*.yaml", "./src/routes/*.ts"], // Membaca file YAML di folder docs
+  apis: [
+    process.env.NODE_ENV === "production"
+      ? path.join(__dirname, "../dist/docs/*.yaml")
+      : path.join(__dirname, "../src/docs/*.yaml"),
+  ], // Membaca file YAML di folder docs
 };
 
 export default swaggerOptions;

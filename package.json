@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "tsc && mkdir -p dist/docs && cp -r src/docs/*.yaml dist/docs/",
+    "build": "tsc && mkdir -p dist/docs && cp -r src/docs/*.yaml dist/docs/ || echo 'No YAML files found in src/docs/'",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
