@@ -35,10 +35,5 @@
       "src": "/(.*)",
       "dest": "/src/index.ts"
     }
-  ],
-  "functions": {
-    "src/index.ts": {
-      "includeFiles": "src/docs/**"
-    }
-  }
+  ]
 }
