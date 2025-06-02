@@ -686,30 +686,3 @@ export const authDocs = {
     },
   },
 };
-
-// Template untuk docs lainnya - ganti dengan content dari file YAML Anda
-export const userDocs = {
-  // Pindahkan content dari user.yaml ke sini
-  // Contoh struktur:
-  // "/api/v1/users/profile": {
-  //   get: { ... }
-  // }
-};
-
-export const jobApplicationDocs = {
-  // Pindahkan content dari jobApplication.yaml ke sini
-  // Contoh struktur:
-  // "/api/v1/job-applications": {
-  //   get: { ... },
-  //   post: { ... }
-  // }
-};
-
-export const userResumeDocs = {
-  // Pindahkan content dari userResume.yaml ke sini
-  // Contoh struktur:
-  // "/api/v1/users/resume": {
-  //   get: { ... },
-  //   post: { ... }
-  // }
-};

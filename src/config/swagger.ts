@@ -1,6 +1,9 @@
 import { Options } from "swagger-jsdoc";
 import path from "path";
 import { authDocs } from "../docs/auth";
+import { jobApplicationDocs } from "../docs/jobApplication";
+import { userResumeDocs } from "../docs/userResume";
+import { userProfileDocs } from "../docs/user";
 
 const swaggerOptions: Options = {
   definition: {
@@ -37,6 +40,9 @@ const swaggerOptions: Options = {
     // Inline paths dari file YAML
     paths: {
       ...authDocs,
+      ...jobApplicationDocs,
+      ...userProfileDocs,
+      ...userResumeDocs,
     },
   },
   // Ubah path API untuk mendukung environment production
