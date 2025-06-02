@@ -34,11 +34,17 @@ const swaggerOptions: Options = {
       },
     ],
   },
+  // Ubah path API untuk mendukung environment production
   apis: [
-    process.env.NODE_ENV === "production"
-      ? path.join(__dirname, "../dist/docs/*.yaml")
-      : path.join(__dirname, "../src/docs/*.yaml"),
-  ], // Membaca file YAML di folder docs
+    path.join(process.cwd(), "src/docs/*.yaml"),
+    path.join(process.cwd(), "src/routes/*.ts"),
+    // Alternatif path untuk Vercel
+    "./docs/*.yaml",
+    "./routes/*.ts",
+    // Path absolut sebagai fallback
+    path.resolve(__dirname, "../docs/*.yaml"),
+    path.resolve(__dirname, "../routes/*.ts"),
+  ],
 };
 
 export default swaggerOptions;
