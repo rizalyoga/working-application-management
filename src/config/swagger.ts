@@ -1,5 +1,6 @@
 import { Options } from "swagger-jsdoc";
 import path from "path";
+import { authDocs } from "../docs/auth";
 
 const swaggerOptions: Options = {
   definition: {
@@ -33,18 +34,13 @@ const swaggerOptions: Options = {
         bearerAuth: [],
       },
     ],
+    // Inline paths dari file YAML
+    paths: {
+      ...authDocs,
+    },
   },
   // Ubah path API untuk mendukung environment production
-  apis: [
-    path.join(process.cwd(), "src/docs/*.yaml"),
-    path.join(process.cwd(), "src/routes/*.ts"),
-    // Alternatif path untuk Vercel
-    "./docs/*.yaml",
-    "./routes/*.ts",
-    // Path absolut sebagai fallback
-    path.resolve(__dirname, "../docs/*.yaml"),
-    path.resolve(__dirname, "../routes/*.ts"),
-  ],
+  apis: ["./src/routes/*.ts"],
 };
 
 export default swaggerOptions;
