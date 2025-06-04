@@ -325,6 +325,38 @@ export const deleteJobApplication = async (req: Request, res: Response) => {
   }
 };
 
+// Delete all job application
+export const deleteAllJobApplication = async (req: Request, res: Response) => {
+  console.log("INI REQU", req);
+  try {
+    const userId = (req as any).user.id;
+
+    if (!userId) {
+      res.status(401).json(errorResponse("User not authenticated", 401));
+    }
+
+    // Delete all the job application
+    const { error } = await supabase
+      .from("job_applications")
+      .delete()
+      .eq("user_id", userId); // Extra safety to ensure user can only delete their own data
+
+    if (error) {
+      res
+        .status(500)
+        .json(
+          errorResponse(`Error deleting job application: ${error.message}`, 500)
+        );
+    }
+
+    res
+      .status(200)
+      .json(successResponse("All job application deleted successfully", null));
+  } catch (error: any) {
+    res.status(500).json(errorResponse(`Server error: ${error.message}`, 500));
+  }
+};
+
 // Get application statuses (for dropdown menus)
 export const getApplicationStatuses = async (req: Request, res: Response) => {
   try {

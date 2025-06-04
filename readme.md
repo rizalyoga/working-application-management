@@ -173,6 +173,7 @@ CREATE TABLE application_status_history (
 | POST   | `/api/v1/job-applications`                 | Create new application                          | `{ application_date, job_position, job_portal, company_name, job_url, status_id, notes }` | YES           |
 | PUT    | `/api/v1/job-applications/{:job-id}`       | Update application data                         | Any fields to update                                                                      | YES           |
 | DEL    | `/api/v1/job-applications/{:job-id}`       | Delete application data                         | `{ - }`                                                                                   | YES           |
+| DEL    | `/api/v1/job-applications/all-job`         | Delete all application data                     | `{ - }`                                                                                   | YES           |
 | GET    | `/api/v1/job-applications`                 | Get all data applications                       | `{ - }`                                                                                   | YES           |
 | GET    | `/api/v1/job-applications/{:id}`           | Get data application by id                      | `{ - }`                                                                                   | YES           |
 | GET    | `/api/v1/job-applications/group-by-status` | Get the total number of applications per status | `{ - }`                                                                                   | YES           |

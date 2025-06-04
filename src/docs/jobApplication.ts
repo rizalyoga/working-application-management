@@ -690,6 +690,101 @@ export const jobApplicationDocs = {
       },
     },
   },
+  "/api/v1/job-applications/all-job": {
+    delete: {
+      summary: "Delete all job application data",
+      description: "Delete all job application",
+      tags: ["Job Applications"],
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
+      parameters: [],
+      responses: {
+        "200": {
+          description: "All job application deleted successfully",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  status: {
+                    type: "string",
+                    enum: ["success", "error"],
+                    example: "success",
+                  },
+                  status_code: {
+                    type: "integer",
+                    example: 200,
+                  },
+                  message: {
+                    type: "string",
+                    example: "All job application deleted successfully",
+                  },
+                  data: {
+                    type: "null",
+                    nullable: true,
+                    example: null,
+                  },
+                },
+              },
+            },
+          },
+        },
+        "401": {
+          description: "User not authenticated",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  status: {
+                    type: "string",
+                    enum: ["success", "error"],
+                    example: "error",
+                  },
+                  status_code: {
+                    type: "integer",
+                    example: 404,
+                  },
+                  message: {
+                    type: "string",
+                    example: "User not authenticated",
+                  },
+                },
+              },
+            },
+          },
+        },
+        "500": {
+          description: "Error deleting job application data",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  status: {
+                    type: "string",
+                    enum: ["success", "error"],
+                    example: "error",
+                  },
+                  status_code: {
+                    type: "integer",
+                    example: 500,
+                  },
+                  message: {
+                    type: "string",
+                    example: "Error deleting job application",
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   "/api/v1/job-applications/statuses": {
     get: {
       summary: "Get application statuses",

@@ -6,6 +6,7 @@ import {
   getJobApplicationById,
   updateJobApplication,
   deleteJobApplication,
+  deleteAllJobApplication,
   getApplicationStatuses,
   getJobApplicationTotalBasedOnStatus,
 } from "../controllers/jobApplicationController";
@@ -39,6 +40,9 @@ router.get("/:id", authenticate, getJobApplicationById);
 
 // update job application data
 router.put("/:id", authenticate, updateJobApplication);
+
+// delete all job application data
+router.delete("/all-job", authenticate, deleteAllJobApplication);
 
 // delete job application data
 router.delete("/:id", authenticate, deleteJobApplication);
