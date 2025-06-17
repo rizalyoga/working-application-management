@@ -172,6 +172,7 @@ export const login = async (req: Request, res: Response) => {
       .limit(1);
 
     if (findError) {
+      console.log("ERROR PADA SUPABASE");
       res
         .status(500)
         .json(errorResponse(`Error finding user: ${findError.message}`, 500));

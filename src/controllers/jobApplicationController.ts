@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
 import supabase from "../config/supabase";
 import { successResponse, errorResponse } from "../utils/apiResponse";
-import { JobApplication } from "../models/types";
 
 // Create a new job application
 export const createJobApplication = async (req: Request, res: Response) => {
@@ -327,7 +325,6 @@ export const deleteJobApplication = async (req: Request, res: Response) => {
 
 // Delete all job application
 export const deleteAllJobApplication = async (req: Request, res: Response) => {
-  console.log("INI REQU", req);
   try {
     const userId = (req as any).user.id;
 

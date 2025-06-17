@@ -6,6 +6,7 @@ import { testDBConnection } from "./utils/testDBConnection";
 import authRoutes from "./routes/authRoutes";
 import jobApplicationRoutes from "./routes/jobApplicationRoutes";
 import userRoutes from "./routes/userRoutes";
+import scheduleRoutes from "./routes/scheduleRoutes";
 import { errorResponse } from "./utils/apiResponse";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -61,6 +62,7 @@ app.get("/json", (req: Request, res: Response) => {
 // API Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/schedule", scheduleRoutes);
 app.use("/api/v1/job-applications", jobApplicationRoutes);
 
 // Test route for database connection
@@ -91,7 +93,9 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 // Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  console.log(`Dokumentasi API tersedia di http://localhost:${port}/api-docs`);
+  console.log(
+    `API documentation is available at http://localhost:${port}/api-docs`
+  );
 });
 
 export default app;

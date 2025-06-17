@@ -25,6 +25,8 @@ A RESTful API for tracking and managing job applications, built with Express.js,
   - Read, update data user ( username, email, password, photo profile)
   - Password change functionality
   - Upload & download resume
+  - Upload, edit, delete photo profile
+  - Create, update, delete shedule
 
 ## Tech Stack
 
@@ -140,6 +142,23 @@ CREATE TABLE application_status_history (
 );
 ```
 
+### Calendar Schedule table
+
+```sql
+CREATE TABLE public.calendar_schedule (
+    id uuid NOT NULL DEFAULT gen_random_uuid(),
+    user_id uuid NULL,
+    title character varying NOT NULL,
+    description text NULL,
+    "date" date NOT NULL,
+    "time" time without time zone NOT NULL,
+    created_at timestamp with time zone NULL DEFAULT now(),
+    updated_at timestamp with time zone NULL DEFAULT now(),
+    CONSTRAINT calendar_schedule_pkey PRIMARY KEY (id),
+    CONSTRAINT calendar_schedule_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```
+
 ## API Endpoints
 
 ### Authentication
@@ -178,6 +197,16 @@ CREATE TABLE application_status_history (
 | GET    | `/api/v1/job-applications/{:id}`           | Get data application by id                      | `{ - }`                                                                                   | YES           |
 | GET    | `/api/v1/job-applications/group-by-status` | Get the total number of applications per status | `{ - }`                                                                                   | YES           |
 | GET    | `/api/v1/job-applications/statuses`        | Get all application statuses                    | `{ - }`                                                                                   | YES           |
+
+### Calendar Shedule
+
+| Method | Endpoint                       | Description                | Request Body                         | Auth (Bearer) |
+| ------ | ------------------------------ | -------------------------- | ------------------------------------ | ------------- |
+| POST   | `/api/v1/schedule/my-shedules` | Create new schedule        | `{ title, description, date, time }` | YES           |
+| GET    | `/api/v1/schedule/my-shedules` | Get all schedule data      | `{ - }`                              | YES           |
+| GET    | `/api/v1/shedule/{:id}`        | Get schedule data by id    | `{ - }`                              | YES           |
+| PUT    | `/api/v1/shedule/{:id}`        | Update schedule data       | `Any fields to update   `            | YES           |
+| DEL    | `/api/v1/shedule/{:id}`        | Delete schedule data by id | `{ - }`                              | YES           |
 
 ## Authentication Flow
 
