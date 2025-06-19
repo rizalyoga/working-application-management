@@ -40,7 +40,7 @@ export const getSchedules = async (req: Request, res: Response) => {
 
     const { data, error } = await supabase
       .from("calendar_schedule")
-      .select("*")
+      .select("id, title, description,date,time,created_at")
       .eq("user_id", userId);
 
     if (error) {
@@ -64,7 +64,7 @@ export const getScheduleById = async (req: Request, res: Response) => {
 
     const { data, error } = await supabase
       .from("calendar_schedule")
-      .select("*")
+      .select("id, title, description,date,time,created_at")
       .eq("id", id)
       .eq("user_id", userId) // Ensure user can only access their own data
       .single();
@@ -130,7 +130,7 @@ export const updateSchedule = async (req: Request, res: Response) => {
       .update(updateData)
       .eq("id", id)
       .eq("user_id", userId)
-      .select("*")
+      .select("id, title, description,date,time,created_at")
       .single();
 
     if (error) {
